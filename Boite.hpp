@@ -3,6 +3,7 @@
 
 
 #include <iostream>
+#include "Particule.hpp"
 using namespace std;
 
 class Boite {
@@ -18,11 +19,8 @@ class Boite {
     Boite* soeur;
 
   public:
-    Boite();
+    Boite(int niv,double x,double y,double masse_x, double masse_y,double masse, Particule* part);
     ~Boite();
-
-
-
 
 };
 
