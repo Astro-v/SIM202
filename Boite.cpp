@@ -9,7 +9,6 @@ Boite::Boite(int niv,double x,double y,double masse_x, double masse_y,double m, 
   centre_masse_y = masse_y;
   masse = m;
   nb_particules = 0;
-  particule = NULL;
   nordOuest = NULL;
   nordEst = NULL;
   sudOuest = NULL;
@@ -18,7 +17,6 @@ Boite::Boite(int niv,double x,double y,double masse_x, double masse_y,double m, 
 }
 
 Boite::~Boite(){
-  particule = NULL;
   nordOuest = NULL;
   nordEst = NULL;
   sudOuest = NULL;
@@ -37,12 +35,17 @@ void Boite::insert(Particule* part){
   //La particule est située dans cette boite, on l'ajoute donc
   if(nb_particules < capacity){
     //On ajoute la particule dans cette Boite
+    particules.push_back(part);
+    nb_particules += 1;
+    centre_masse_x = (masse*centre_masse_x +  part->masse * part->x)/(masse + part->masse);
+    centre_masse_y = (masse*centre_masse_y +  part->masse * part->y)/(masse + part->masse);
+    masse += part->masse;
     return;
   }else{
-    if(nordOuest == NULL){
-      subdivise();
+    if(nordOuest == NULL){ //Si la boite n'a pas de fille
+      subdivise(); //On crée les filles
     }
-    nordOuest->insert(part);
+    nordOuest->insert(part); //On ajoute la particule dans ces filles
     nordEst->insert(part);
     sudEst->insert(part);
     sudOuest->insert(part);
