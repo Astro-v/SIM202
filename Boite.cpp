@@ -25,7 +25,8 @@ Boite::~Boite(){
 
 
 bool Boite::contient(Particule* part){ //La particule est-elle située dans cette boite ?
-  return((part->x < centre_x + pow(2,niveau + 1)) && (part->x > centre_x + pow(2,niveau + 1)) && (part->y < centre_y + pow(2,niveau + 1)) && (part->y > centre_y - pow(2,niveau + 1)));
+
+  return((part->x < centre_x + pow(2,-(niveau + 1))) && (part->x > centre_x - pow(2,-(niveau + 1))) && (part->y < centre_y + pow(2,-(niveau + 1))) && (part->y > centre_y - pow(2,-(niveau + 1))));
 }
 
 void Boite::insert(Particule* part){
@@ -40,10 +41,12 @@ void Boite::insert(Particule* part){
     centre_masse_x = (masse*centre_masse_x +  part->masse * part->x)/(masse + part->masse);
     centre_masse_y = (masse*centre_masse_y +  part->masse * part->y)/(masse + part->masse);
     masse += part->masse;
+    //cout<<"Ajouté"<<endl;
     return;
   }else{
     if(nordOuest == NULL){ //Si la boite n'a pas de fille
       subdivise(); //On crée les filles
+      //cout<<"Subdivisé"<<endl;
     }
     nordOuest->insert(part); //On ajoute la particule dans ces filles
     nordEst->insert(part);
@@ -56,10 +59,10 @@ void Boite::insert(Particule* part){
 }
 
 void Boite::subdivise(){
-  Boite nO = Boite(niveau + 1, centre_x - pow(2,niveau+1),centre_y + pow(2,niveau+1),0,0,0,1);
-  Boite nE = Boite(niveau + 1, centre_x + pow(2,niveau+1),centre_y + pow(2,niveau+1),0,0,0,1);
-  Boite sO = Boite(niveau + 1, centre_x - pow(2,niveau+1),centre_y - pow(2,niveau+1),0,0,0,1);
-  Boite sE = Boite(niveau + 1, centre_x + pow(2,niveau+1),centre_y - pow(2,niveau+1),0,0,0,1);
+  Boite nO = Boite(niveau + 1, centre_x - pow(2,-(niveau+1)),centre_y + pow(2,-(niveau+1)),0,0,0,1);
+  Boite nE = Boite(niveau + 1, centre_x + pow(2,-(niveau+1)),centre_y + pow(2,-(niveau+1)),0,0,0,1);
+  Boite sO = Boite(niveau + 1, centre_x - pow(2,-(niveau+1)),centre_y - pow(2,-(niveau+1)),0,0,0,1);
+  Boite sE = Boite(niveau + 1, centre_x + pow(2,-(niveau+1)),centre_y - pow(2,-(niveau+1)),0,0,0,1);
 
   nordOuest = &nO;
   nordEst = &nE;
