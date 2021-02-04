@@ -14,15 +14,20 @@ class Boite {
     double centre_masse_x;
     double centre_masse_y;
     double masse;
+    int nb_particules;
     Particule* particule;
-    Boite* fille;
-    Boite* soeur;
+    Boite* nordOuest;
+    Boite* nordEst;
+    Boite* sudOuest;
+    Boite* sudEst;
+    int capacity;
 
   public:
-    Boite(int niv,double x,double y,double masse_x, double masse_y,double masse, Particule* part);
+    Boite(int niv,double x,double y,double masse_x, double masse_y,double m, int capacity_);
     ~Boite();
-
+    bool contient(Particule* part);
+    void insert(Particule* part);
+    void subdivise();
 };
 
-creation
 #endif //BOITE_HPP
