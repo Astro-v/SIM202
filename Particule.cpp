@@ -7,28 +7,28 @@ using namespace std;
 const float G=1;
 
 Particule::Particule(){
-    r=0;
-    teta=0;
+    x=0;
+    y=0;
     m=1;
     v=1;
 }
 
-Particule::Particule(double R, double Teta, double V, double M){
-    r=R;
-    teta=Teta;
+Particule::Particule(double X, double Y, double V, double M){
+    x=X;
+    y=Y;
     m=M;
     v=V;
 }
 
 Particule::Particule(const Particule& P){
-    r=P.r;
-    teta=P.teta;
+    x=P.x;
+    y=P.y;
     v=P.v;
     m=P.m;
 }
 
 double force_interaction(const Particule& P, const Particule& Q,double eps){
-    unsigned int R=P.r-Q.r;
+    double R=fabs(sqrt(pow(P.x,2)+pow(P.y,2))-sqrt(pow(Q.x,2)+pow(Q.y,2)));
     if (R>eps){
         return((-G*P.m*Q.m)/(R*R));
     }
@@ -38,5 +38,6 @@ double force_interaction(const Particule& P, const Particule& Q,double eps){
 }
 
 void vitesse_echappement(Particule& P,double q){
-    P.v=q*sqrt(2)*pow((1.0+pow(P.r,2)),(-1/4));
+    double R=sqrt(pow(P.x,2)+pow(P.y,2));
+    P.v=q*sqrt(2)*pow((1.0+pow(R,2)),(-1/4));
 }
