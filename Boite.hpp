@@ -1,7 +1,7 @@
 #ifndef BOITE_HPP
 #define BOITE_HPP
 
-
+#include<vector>
 #include <iostream>
 #include "Particule.hpp"
 using namespace std;
@@ -14,14 +14,20 @@ class Boite {
     double centre_masse_x;
     double centre_masse_y;
     double masse;
-    Particule* particule;
-    Boite* fille;
-    Boite* soeur;
+    int nb_particules;
+    vector<Particule*> particules;
+    Boite* nordOuest;
+    Boite* nordEst;
+    Boite* sudOuest;
+    Boite* sudEst;
+    int capacity;
 
   public:
-    Boite(int niv,double x,double y,double masse_x, double masse_y,double masse, Particule* part);
+    Boite(int niv,double x,double y,double masse_x, double masse_y,double m, int capacity_);
     ~Boite();
-
+    bool contient(Particule* part);
+    void insert(Particule* part);
+    void subdivise();
 };
 
 #endif //BOITE_HPP
