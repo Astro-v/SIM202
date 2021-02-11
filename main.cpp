@@ -1,5 +1,8 @@
 #include <iostream>
 #include "Boite.hpp"
+#include "Particule.hpp"
+#include <stdlib.h>
+#include <cmath>
 using namespace std;
 
 int main()
