@@ -38,5 +38,5 @@ double force_interaction(const Particule& P, const Particule& Q,double eps){
 }
 
 void vitesse_echappement(Particule& P,double q){
-    P.v=q*sqrt(2)*(1+P.r^2)^(-1/4);
+    P.v=q*sqrt(2)*pow((1.0+pow(P.r,2)),(-1/4));
 }
