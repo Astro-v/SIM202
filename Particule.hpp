@@ -6,13 +6,13 @@ using namespace std;
 
 class Particule{
     public:
-    double r,teta,v,m;
+    double x,y,vx,vy,vz,m;
     Particule(); //Constructeur par défaut
-    Particule(double r, double teta, double v, double m); //Constructeur à partir de variables
-    Particule(const Particule& P); //Constructeur par copie
+    Particule(double X, double Y, double Vx, double Vy, double Vz, double M); //Constructeur à partir de variables
+    Particule(const Particule& P); //Constructeur par copie 
 };
 
 double force_interaction(const Particule&, const Particule&,double);
-void vitesse_echappement(Particule&, double);
+double vitesse_echappement(Particule&, double);
 
 #endif
