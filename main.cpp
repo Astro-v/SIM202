@@ -3,6 +3,7 @@
 #include "Particule.hpp"
 #include <stdlib.h>
 #include <cmath>
+#include "MyWindow.hpp"
 using namespace std;
 
 int main()
@@ -42,7 +43,11 @@ int main()
     }
     P.vx=v*X7/uv;
     P.vy=v*X8/uv;
-
+    
+    MyWindow window(1000,1000);
+    while (window.isOpen())
+    {
+    }
 
   return 0;
 }
