@@ -9,6 +9,10 @@ using namespace std;
 
 int main()
 {
+  N_part = 10;
+  Boite principale = Boite(0,0.5,0.5,0, 0,0, 1);
+  
+  for(int i = 0; i < Nb_part; i++){
   //Génération des conditions initiales
     double X1=(rand()%100)/100;
     class Particule P;
@@ -44,6 +48,9 @@ int main()
     }
     P.vx=v*X7/uv;
     P.vy=v*X8/uv;
+    
+    principale.insert(P);
+  }
     
     MyWindow window(1000,1000);
     while (window.isOpen())
