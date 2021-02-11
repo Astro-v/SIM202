@@ -13,7 +13,7 @@ int main()
   Boite principale = Boite(0,0.5,0.5,0, 0,0, 1);
   
   for(int i = 0; i < Nb_part; i++){
-  //Génération des conditions initiales
+    //Génération des conditions initiales
     double X1=(rand()%100)/100;
     class Particule P;
     double r=pow(0.999*pow(X1,-2/3)-1,-1/2);
@@ -48,7 +48,7 @@ int main()
     }
     P.vx=v*X7/uv;
     P.vy=v*X8/uv;
-    
+    P.m=1/N_part;
     principale.insert(P);
   }
     
