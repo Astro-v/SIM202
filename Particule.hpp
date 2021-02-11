@@ -12,7 +12,7 @@ class Particule{
     Particule(const Particule& P); //Constructeur par copie
 };
 
-double force_interaction(const Particule&, const Particule&);
-double masse_isotrope();
+double force_interaction(const Particule&, const Particule&,double);
+void vitesse_echappement(Particule&, double);
 
 #endif
