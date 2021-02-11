@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <cmath>
 #include "MyWindow.hpp"
+#include <SFML/Graphics.hpp>
 using namespace std;
 
 int main()
@@ -47,6 +48,14 @@ int main()
     MyWindow window(1000,1000);
     while (window.isOpen())
     {
+         sf::Event event;
+          while (window.pollEvent(event))
+          {
+              if (event.type == sf::Event::Closed)
+              {
+                  window.close();
+              }
+          }
     }
 
   return 0;
