@@ -1,7 +1,10 @@
 #include <iostream>
 #include "Particule.hpp"
+#include <cmath>
 
 using namespace std;
+
+const float G=1;
 
 Particule::Particule(){
     r=0;
@@ -22,4 +25,18 @@ Particule::Particule(const Particule& P){
     teta=P.teta;
     v=P.v;
     m=P.m;
+}
+
+double force_interaction(const Particule& P, const Particule& Q,double eps){
+    unsigned int R=P.r-Q.r;
+    if (R>eps){
+        return((-G*P.m*Q.m)/(R*R));
+    }
+    else{
+        return((-G*P.m*Q.m)/(eps*eps));
+    }
+}
+
+void vitesse_echappement(Particule& P,double q){
+    P.v=q*sqrt(2)*(1+P.r^2)^(-1/4);
 }
