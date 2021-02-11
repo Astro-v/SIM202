@@ -25,8 +25,9 @@ Boite::~Boite(){
 
 
 bool Boite::contient(Particule* part){ //La particule est-elle située dans cette boite ?
-
-  return((part->x < centre_x + pow(2,-(niveau + 1))) && (part->x > centre_x - pow(2,-(niveau + 1))) && (part->y < centre_y + pow(2,-(niveau + 1))) && (part->y > centre_y - pow(2,-(niveau + 1))));
+  double x = (part->r)*cos(part->teta);
+  double y = (part->r)*sin(part->teta);
+  return((x < centre_x + pow(2,-(niveau + 1))) && (x > centre_x - pow(2,-(niveau + 1))) && (y < centre_y + pow(2,-(niveau + 1))) && (y > centre_y - pow(2,-(niveau + 1))));
 }
 
 void Boite::insert(Particule* part){
@@ -38,9 +39,11 @@ void Boite::insert(Particule* part){
     //On ajoute la particule dans cette Boite
     particules.push_back(part);
     nb_particules += 1;
-    centre_masse_x = (masse*centre_masse_x +  part->masse * part->x)/(masse + part->masse);
-    centre_masse_y = (masse*centre_masse_y +  part->masse * part->y)/(masse + part->masse);
-    masse += part->masse;
+    double x = (part->r)*cos(part->teta);
+    double y = (part->r)*sin(part->teta);
+    centre_masse_x = (masse*centre_masse_x +  part->m * x)/(masse + part->m);
+    centre_masse_y = (masse*centre_masse_y +  part->m * y)/(masse + part->m);
+    masse += part->m;
     //cout<<"Ajouté"<<endl;
     return;
   }else{
