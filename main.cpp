@@ -50,7 +50,6 @@ int main()
     P.vy=v*X8/uv;
     P.m=1/N_part;
     principale.insert(P);
-  }
     
     MyWindow window(1000,1000);
     while (window.isOpen())
