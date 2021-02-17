@@ -11,7 +11,7 @@ int main()
 {
   N_part = 10;
   Boite principale = Boite(0,0.5,0.5,0, 0,0, 1);
-  
+
   for(int i = 0; i < Nb_part; i++){
     //Génération des conditions initiales
     double X1=(rand()%100)/100;
@@ -50,7 +50,7 @@ int main()
     P.vy=v*X8/uv;
     P.m=1/N_part;
     principale.insert(P);
-    
+
     MyWindow window(1000,1000);
     while (window.isOpen())
     {
@@ -62,7 +62,28 @@ int main()
                   window.close();
               }
           }
+
+          calcul(&principale);
     }
 
   return 0;
+}
+
+void calcul(Boite* b){
+  if(b == NULL){
+    return;
+  }
+
+  for(int i = 0; i < particules.size(); i++){ //Pour chaque particule de la boite
+    //On calcule la résultante des forces qui s'applique sur la particule
+    double f = calcul_force()
+    //On met à jour la vitesse et la position de la particule
+  }
+
+  //On appelle recursivement calcul sur les filles de b
+  calcul(b->nordOuest);
+  calcul(b->sudOuest);
+  calcul(b->nordEst);
+  calcul(b->sudEst);
+
 }
