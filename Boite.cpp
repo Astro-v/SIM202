@@ -77,20 +77,55 @@ void Boite::insert(Particule* part){
 }
 
 void Boite::subdivise(){
-
-  //cout<<"Boite nO : niveau : "<<niveau + 1<<" centre_x : "<<centre_x - pow(2.,-(niveau+1))<<" centre y : "<<centre_y + pow(2.,-(niveau+1))<<endl;
-  //Boite nO = Boite(niveau + 1, centre_x - pow(2.,-(niveau+1)),centre_y + pow(2.,-(niveau+1)),0,0,0,1);
-  //cout<<"Boite nE : niveau : "<<niveau + 1<<" centre_x : "<<centre_x + pow(2.,-(niveau+1))<<" centre y : "<<centre_y + pow(2.,-(niveau+1))<<endl;
-  //Boite nE = Boite(niveau + 1, centre_x + pow(2.,-(niveau+1)),centre_y + pow(2.,-(niveau+1)),0,0,0,1);
-  //cout<<"Boite sO : niveau : "<<niveau + 1<<" centre_x : "<<centre_x - pow(2.,-(niveau+1))<<" centre y : "<<centre_y - pow(2.,-(niveau+1))<<endl;
-  //Boite sO = Boite(niveau + 1, centre_x - pow(2.,-(niveau+1)),centre_y - pow(2.,-(niveau+1)),0,0,0,1);
-  //cout<<"Boite sE : niveau : "<<niveau + 1<<" centre_x : "<<centre_x + pow(2.,-(niveau+1))<<" centre y : "<<centre_y - pow(2.,-(niveau+1))<<endl;
-  //Boite sE = Boite(niveau + 1, centre_x + pow(2.,-(niveau+1)),centre_y - pow(2.,-(niveau+1)),0,0,0,1);
-
-
   nordOuest = new Boite(niveau + 1, centre_x - pow(2.,-(niveau+1)),centre_y + pow(2.,-(niveau+1)),0,0,0,1);
   nordEst = new Boite(niveau + 1, centre_x + pow(2.,-(niveau+1)),centre_y + pow(2.,-(niveau+1)),0,0,0,1);;
   sudEst = new  Boite(niveau + 1, centre_x - pow(2.,-(niveau+1)),centre_y - pow(2.,-(niveau+1)),0,0,0,1);
   sudOuest = new Boite(niveau + 1, centre_x + pow(2.,-(niveau+1)),centre_y - pow(2.,-(niveau+1)),0,0,0,1);
   return;
+}
+
+int Boite::getPos(int i)
+/*
+i = 0 : get size of the box
+i = 1 : get posX of the box
+i = 2 : get posY of the box 
+*/
+{
+  if (i==0)
+  {
+    return (int)floor(SIZE*pow(2,-niveau+1))-2;
+  }
+  else if (i==1)
+  {
+    return (int)floor(SIZE*centre_x - SIZE*pow(2,-niveau))+1;
+  }
+  else
+  {
+    return (int)floor(SIZE*centre_y - SIZE*pow(2,-niveau))+1;
+  }
+}
+
+Boite* Boite::getSubBox(int i)
+/*
+    i = 0 : return nordOuest;
+    i = 1 : return nordEst;
+    i = 2 : return sudOuest;
+    i = 3 : return sudEst;
+*/
+{
+  switch (i)
+  {
+    case 0:
+    return nordOuest;
+    break;
+    case 1:
+    return nordEst;
+    break;
+    case 2:
+    return sudOuest;
+    break;
+    case 3:
+    return sudEst;
+    break;
+  }
 }
