@@ -63,7 +63,14 @@ void Boite::insert(Particule* part){
     nordEst->insert(part);
     sudEst->insert(part);
     sudOuest->insert(part);
-
+    
+    for(int i = 0; i < (int)particules.size();i++){
+      nordOuest->insert(particules[i]); //On ajoute la particule dans ces filles
+      nordEst->insert(particules[i]);
+      sudEst->insert(particules[i]);
+      sudOuest->insert(particules[i]);
+      particules.clear();
+    }
     return;
 
   }
