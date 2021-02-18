@@ -1,30 +1,31 @@
 // STANDART LIBRARY
 #include <iostream> // Stream
-#include <stdlib.h>
+#include <stdlib.h> 
 #include <cmath>
 #include <vector>
 
 // GRAPHIC LIBRARY
-//#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 // INCLUDE LIBRARY
 #include "Boite.hpp"
 #include "Particule.hpp"
-//#include "Constant.hpp"
-//#include "MyWindow.hpp"
+#include "Constant.hpp"
+#include "MyWindow.hpp"
 
 
 using namespace std;
 
-//void displayBox(Boite&,MyWindow&);
+void displayBox(Boite&,MyWindow&);
+void euler(vector<Particule>&);
 
 int main()
 {
 
-    int N_part = 100;
-    Boite principale = Boite(0,0.5,0.5,0, 0,0, 1);
+    int N_part = 1000;
+    Boite principale = Boite(1,0.5,0.5,0, 0,0, 1);
     vector<Particule> vecPart;
-    while ((int)vecPart.size() < N_part){
+    while (vecPart.size() < N_part){
         //Génération des conditions initiales
         double X1=rand()/(double)RAND_MAX;
         Particule P;
@@ -66,10 +67,10 @@ int main()
             vecPart.push_back(P);
             principale.insert(&vecPart[vecPart.size()-1]);
         }
-      //creation_quadtree(vecPart);
+        
+        
     }
-  }
-/*
+
     MyWindow window(SIZE,SIZE);
     while (window.isOpen())
     {
@@ -82,11 +83,17 @@ int main()
             }
         }
 
+        // We compute next step
+        // euler(vecPart);
+
+
         window.clear();
         displayBox(principale,window);
-        window.drawBox(100,100,100);
-        window.drawParticle(110,210,10);
-        window.drawParticle(120,260,10);
+        for (int i(0);i<N_part;++i)
+        {
+            window.drawParticle(vecPart[i].x*SIZE,vecPart[i].y*SIZE,1);
+        }
+        
         window.display();
     }
     system("PAUSE");
@@ -100,6 +107,38 @@ void displayBox(Boite& box,MyWindow& window)
     if (box.getSubBox(1) != NULL){displayBox(*box.getSubBox(1),window);}
     if (box.getSubBox(2) != NULL){displayBox(*box.getSubBox(2),window);}
     if (box.getSubBox(3) != NULL){displayBox(*box.getSubBox(3),window);}
+}
+
+void euler(vector<Particule>& P)
+{
+    double dt(0.0001);
+    int N_part(P.size());
+    double forceX[N_part][N_part];
+    double forceY[N_part][N_part];
+    for (int i(0);i<N_part;++i)
+    {
+        for (int j(0);j<N_part;++j)
+        {
+            forceX[i][j] = 0;
+            forceY[i][j] = 0;
+            if (i!=j)
+            {
+                forceX[i][j] = force_interaction(P[j],P[i],0.01)*(P[i].x-P[j].x);
+                forceY[i][j] = force_interaction(P[j],P[i],0.01)*(P[i].y-P[j].y);
+            }
+
+        }
+    }
+    for (int i(0);i<N_part;++i)
+    {
+        P[i].x = P[i].x + dt*P[i].vx;
+        P[i].y = P[i].y + dt*P[i].vy;
+        for (int j(0);j<N_part;++j)
+        {
+            P[i].vx = P[i].vx + dt*forceX[i][j];
+            P[i].vy = P[i].vy + dt*forceY[i][j];
+        }
+    }
 }
 
 void calcul(Boite* b){
@@ -125,4 +164,4 @@ double calcul_force(Particule* p){
 
 
 }
-*/
+
