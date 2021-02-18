@@ -3,17 +3,20 @@
 #include "Particule.hpp"
 #include <stdlib.h>
 #include <cmath>
-#include "MyWindow.hpp"
-#include <SFML/Graphics.hpp>
+//#include "MyWindow.hpp"
+//#include <SFML/Graphics.hpp>
 using namespace std;
+
+Boite principale = Boite(1,0.5,0.5,0, 0,0, 1);
 
 int main()
 {
-  N_part = 10;
-  Boite principale = Boite(0,0.5,0.5,0, 0,0, 1);
+  int Nb_part = 10;
+  vector<Particule> vecPart;
 
   for(int i = 0; i < Nb_part; i++){
     //Génération des conditions initiales
+    /*
     double X1=(rand()%100)/100;
     class Particule P;
     double r=pow(0.999*pow(X1,-2/3)-1,-1/2);
@@ -48,9 +51,20 @@ int main()
     }
     P.vx=v*X7/uv;
     P.vy=v*X8/uv;
-    P.m=1/N_part;
-    principale.insert(P);
-
+    P.m=1/Nb_part;
+    */
+    Particule P;
+    P.x = (rand()%100)/(double)100;
+    P.y = (rand()%100)/(double)100;
+    P.vx=(rand()%100)/(double)100;
+    P.vy=(rand()%100)/(double)100;
+    P.m=1/Nb_part;
+    //cout<<"Particule P : (x,y) =  ("<<P.x<<","<<P.y<<")"<<endl;
+    vecPart.push_back(P);
+    principale.insert(&P);
+  }
+}
+/*
     MyWindow window(1000,1000);
     while (window.isOpen())
     {
@@ -76,7 +90,7 @@ void calcul(Boite* b){
 
   for(int i = 0; i < particules.size(); i++){ //Pour chaque particule de la boite
     //On calcule la résultante des forces qui s'applique sur la particule
-    double f = calcul_force()
+    double f = calcul_force(particules[i]);
     //On met à jour la vitesse et la position de la particule
   }
 
@@ -87,3 +101,9 @@ void calcul(Boite* b){
   calcul(b->sudEst);
 
 }
+
+double calcul_force(Particule* p){
+
+
+}
+*/
