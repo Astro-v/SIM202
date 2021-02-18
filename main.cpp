@@ -48,7 +48,7 @@ int main()
     }
     P.vx=v*X7/uv;
     P.vy=v*X8/uv;
-    P.m=1/N_part;
+    P.m=1/(double)N_part;
     principale.insert(P);
   }
     MyWindow window(1000,1000);
