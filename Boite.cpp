@@ -1,4 +1,5 @@
 #include "Boite.hpp"
+#include "Constant.hpp"
 #include <math.h>
 
 Boite::Boite(int niv,double x,double y,double masse_x, double masse_y,double m, int capacity_){
@@ -63,7 +64,7 @@ void Boite::insert(Particule* part){
     nordEst->insert(part);
     sudEst->insert(part);
     sudOuest->insert(part);
-    
+
     for(int i = 0; i < (int)particules.size();i++){
       nordOuest->insert(particules[i]); //On ajoute la particule dans ces filles
       nordEst->insert(particules[i]);
@@ -88,7 +89,7 @@ int Boite::getPos(int i)
 /*
 i = 0 : get size of the box
 i = 1 : get posX of the box
-i = 2 : get posY of the box 
+i = 2 : get posY of the box
 */
 {
   if (i==0)

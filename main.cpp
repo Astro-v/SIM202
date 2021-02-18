@@ -1,6 +1,8 @@
+// g++ -ID:/SFML/include -o out .\main.cpp .\Constant.hpp .\MyWindow.cpp .\Particule.cpp .\Boite.cpp -LD:/SFML/lib -lsfml-graphics -lsfml-window -lsfml-system
+
 // STANDART LIBRARY
 #include <iostream> // Stream
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <cmath>
 #include <vector>
 
@@ -22,7 +24,7 @@ void euler(vector<Particule>&);
 int main()
 {
 
-    int N_part = 1000;
+    int N_part = 100;
     Boite principale = Boite(1,0.5,0.5,0, 0,0, 1);
     vector<Particule> vecPart;
     while (vecPart.size() < N_part){
@@ -67,8 +69,8 @@ int main()
             vecPart.push_back(P);
             principale.insert(&vecPart[vecPart.size()-1]);
         }
-        
-        
+
+
     }
 
     MyWindow window(SIZE,SIZE);
@@ -84,16 +86,16 @@ int main()
         }
 
         // We compute next step
-        // euler(vecPart);
+        euler(vecPart);
 
 
         window.clear();
-        displayBox(principale,window);
+        //displayBox(principale,window);
         for (int i(0);i<N_part;++i)
         {
-            window.drawParticle(vecPart[i].x*SIZE,vecPart[i].y*SIZE,1);
+            window.drawParticle(vecPart[i].x*SIZE,vecPart[i].y*SIZE,4);
         }
-        
+
         window.display();
     }
     system("PAUSE");
@@ -111,7 +113,7 @@ void displayBox(Boite& box,MyWindow& window)
 
 void euler(vector<Particule>& P)
 {
-    double dt(0.0001);
+    double dt(0.00  1);
     int N_part(P.size());
     double forceX[N_part][N_part];
     double forceY[N_part][N_part];
@@ -141,6 +143,7 @@ void euler(vector<Particule>& P)
     }
 }
 
+/*
 void calcul(Boite* b){
   if(b == NULL){
     return;
@@ -164,4 +167,4 @@ double calcul_force(Particule* p){
 
 
 }
-
+*/
