@@ -28,6 +28,10 @@ class Boite {
     bool contient(Particule* part);
     void insert(Particule* part);
     void subdivise();
+  
+    // ACCESSOR
+    int getPos(int);
+    Boite* getSubBox(int);
 };
 
 #endif //BOITE_HPP
