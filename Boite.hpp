@@ -28,7 +28,9 @@ class Boite {
     bool contient(Particule* part);
     void insert(Particule* part);
     void subdivise();
-  
+    vector<double> calcul_force(Particule P, double theta,double eps);
+    void nouveau();
+
     // ACCESSOR
     int getPos(int);
     Boite* getSubBox(int);

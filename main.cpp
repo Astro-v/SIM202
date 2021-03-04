@@ -18,8 +18,10 @@
 
 using namespace std;
 
+
 void displayBox(Boite&,MyWindow&);
 void euler(vector<Particule>&);
+void euler_quad(vector<Particule>& P, Boite principale,double theta);
 
 int main()
 {
@@ -27,7 +29,7 @@ int main()
     int N_part = 100;
     Boite principale = Boite(1,0.5,0.5,0, 0,0, 1);
     vector<Particule> vecPart;
-    while (vecPart.size() < N_part){
+    while ((int)vecPart.size() < N_part){
         //Génération des conditions initiales
         double X1=rand()/(double)RAND_MAX;
         Particule P;
@@ -51,7 +53,10 @@ int main()
             X6=rand()/(double)RAND_MAX;
             g=pow(X5,2)*pow(1-pow(X5,2),7.0/2.0);
         }
-        double q=X5;
+        double Signe=rand()%2;
+        double q;
+        if (Signe==0){q=X5;}
+        if (Signe==1){q=-X5;}
         double v=vitesse_echappement(P,q);
         double X7=rand()/(double)RAND_MAX;
         double X8=rand()/(double)RAND_MAX;
@@ -84,16 +89,32 @@ int main()
                 window.close();
             }
         }
-
+        //cout<<"New step"<<endl;
         // We compute next step
-        euler(vecPart);
-
-
+        //euler(vecPart);
+        //euler_quad(vecPart, principale,0.5);
+        //cout<<"On est sorti"<<endl;
         window.clear();
-        //displayBox(principale,window);
+
+        //delete &principale;
+
+        //Boite principale = Boite(1,0.5,0.5,0, 0,0, 1);
+        principale.nouveau();
+
         for (int i(0);i<N_part;++i)
         {
-            window.drawParticle(vecPart[i].x*SIZE,vecPart[i].y*SIZE,4);
+            //window.drawParticle(vecPart[i].x*SIZE,vecPart[i].y*SIZE,4);
+            principale.insert(&vecPart[i]);
+
+        }
+        //cout<<"On a recree les boites"<<endl;
+        //displayBox(principale,window);
+
+        for (int i(0);i<N_part;++i)
+        {
+            window.drawParticle(vecPart[i].x*SIZE,vecPart[i].y*SIZE,2);
+            principale.insert(&vecPart[i]);
+
         }
 
         window.display();
@@ -113,7 +134,7 @@ void displayBox(Boite& box,MyWindow& window)
 
 void euler(vector<Particule>& P)
 {
-    double dt(0.00  1);
+    double dt(0.01);
     int N_part(P.size());
     double forceX[N_part][N_part];
     double forceY[N_part][N_part];
@@ -143,28 +164,20 @@ void euler(vector<Particule>& P)
     }
 }
 
-/*
-void calcul(Boite* b){
-  if(b == NULL){
-    return;
-  }
+void euler_quad(vector<Particule>& P, Boite principale, double theta)
+{
+    double dt(0.01);
+    int N_part(P.size());
+    for (int i(0);i<N_part;++i)
+    {
+        vector<double> force = principale.calcul_force(P[i], theta,0.01);
 
-  for(int i = 0; i < particules.size(); i++){ //Pour chaque particule de la boite
-    //On calcule la résultante des forces qui s'applique sur la particule
-    double f = calcul_force(particules[i]);
-    //On met à jour la vitesse et la position de la particule
-  }
+        //cout<<"On a calculé une force"<<endl;
+        P[i].x = P[i].x + dt*P[i].vx;
+        P[i].y = P[i].y + dt*P[i].vy;
 
-  //On appelle recursivement calcul sur les filles de b
-  calcul(b->nordOuest);
-  calcul(b->sudOuest);
-  calcul(b->nordEst);
-  calcul(b->sudEst);
-
+        P[i].vx = P[i].vx + dt*force[0];
+        P[i].vy = P[i].vy + dt*force[1];
+    }
+    //cout<<"TOUTES LES FORCES"<<endl;
 }
-
-double calcul_force(Particule* p){
-
-
-}
-*/

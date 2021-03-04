@@ -2,6 +2,8 @@
 #include "Constant.hpp"
 #include <math.h>
 
+
+
 Boite::Boite(int niv,double x,double y,double masse_x, double masse_y,double m, int capacity_){
   niveau = niv;
   centre_x = x;
@@ -36,7 +38,10 @@ void Boite::insert(Particule* part){
     //cout<<"Ce n'est pas la bonne boite"<<endl;
     return;
   }
-  //La particule est située dans cette boite, on l'ajoute donc
+  //La particule est située dans cette boite, on modifie donc le centre de masse et on l'ajoute.
+  centre_masse_x = (masse*centre_masse_x +  part->m * part->x)/(masse + part->m);
+  centre_masse_y = (masse*centre_masse_y +  part->m * part->y)/(masse + part->m);
+  masse += part->m;
   //cout<<"On a trouvé la bonne boite qui a deja "<<nb_particules<<" particules"<<endl;
   if(nb_particules < capacity){
     //cout<<"la Particule que l'on veut inserer est : (x,y) =  ("<<part->x<<","<<part->y<<")"<<endl;
@@ -47,9 +52,7 @@ void Boite::insert(Particule* part){
     nb_particules += 1;
     //double x = (part->r)*cos(part->teta);
     //double y = (part->r)*sin(part->teta);
-    centre_masse_x = (masse*centre_masse_x +  part->m * part->x)/(masse + part->m);
-    centre_masse_y = (masse*centre_masse_y +  part->m * part->y)/(masse + part->m);
-    masse += part->m;
+
     //cout<<"Ajouté"<<endl;
     return;
   }else{
@@ -83,6 +86,65 @@ void Boite::subdivise(){
   sudEst = new  Boite(niveau + 1, centre_x - pow(2.,-(niveau+1)),centre_y - pow(2.,-(niveau+1)),0,0,0,1);
   sudOuest = new Boite(niveau + 1, centre_x + pow(2.,-(niveau+1)),centre_y - pow(2.,-(niveau+1)),0,0,0,1);
   return;
+}
+
+
+vector<double> Boite::calcul_force(Particule P, double theta,double eps){
+  vector<double> force;
+  double r = sqrt(pow((P.x - centre_masse_x),2) + pow((P.y - centre_masse_y),2)); //Distance de P au centre de masse de la boite
+  double d = pow(2.,-niveau + 1);
+  if (d/r < theta){
+    //On renvoit les forces exercées par le centre de masse de la boite
+    if (r>eps){
+        force.push_back((-GRAV*P.m*masse)/(r*r)*(P.x-centre_masse_x));
+        force.push_back((-GRAV*P.m*masse)/(r*r)*(P.y-centre_masse_y));
+        return force;
+    }
+    else{
+      force.push_back((-GRAV*P.m*masse)/(eps*eps)*(P.x-centre_masse_x));
+      force.push_back((-GRAV*P.m*masse)/(eps*eps)*(P.y-centre_masse_y));
+      return force;
+    }
+
+  }else{
+    if(nordOuest==NULL){
+      //On renvoit les forces exercées par le centre de masse de la boite
+      if (r>eps){
+          force.push_back((-GRAV*P.m*masse)/(r*r)*(P.x-centre_masse_x));
+          force.push_back((-GRAV*P.m*masse)/(r*r)*(P.y-centre_masse_y));
+          return force;
+      }
+      else{
+        force.push_back((-GRAV*P.m*masse)/(eps*eps)*(P.x-centre_masse_x));
+        force.push_back((-GRAV*P.m*masse)/(eps*eps)*(P.y-centre_masse_y));
+        return force;
+      }
+    }else{
+      //on itère récursivement le processus
+      vector<double> force_nO = nordOuest->calcul_force(P, theta, eps);
+      //cout<<"nO existe"<<endl;
+      vector<double> force_nE = nordEst->calcul_force(P, theta, eps);
+      //cout<<"nE existe"<<endl;
+      vector<double> force_sO = sudOuest->calcul_force(P, theta, eps);
+      //cout<<"sO existe"<<endl;
+      vector<double> force_sE = sudEst->calcul_force(P, theta, eps);
+      //cout<<"sE existe"<<endl;
+      force.push_back(force_nO[0] + force_nE[0] + force_sO[0] + force_sE[0]);
+      force.push_back(force_nO[1] + force_nE[1] + force_sO[1] + force_sE[1]);
+      return force;
+    }
+  }
+}
+
+void Boite::nouveau(){
+  centre_masse_x = 0;
+  centre_masse_y = 0;
+  masse = 0;
+  nb_particules = 0;
+  nordOuest = NULL;
+  nordEst = NULL;
+  sudOuest = NULL;
+  sudEst = NULL;
 }
 
 int Boite::getPos(int i)
