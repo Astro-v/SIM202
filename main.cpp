@@ -34,16 +34,16 @@ int main()
         double X1=rand()/(double)RAND_MAX;
         Particule P;
         double r=pow(0.999*pow(X1,-2.0/3.0)-1,-1.0/2.0);
-        double X2=rand()/(double)RAND_MAX;
-        double X3=rand()/(double)RAND_MAX;
+        double X2=rand()/(double)RAND_MAX-0.5;
+        double X3=rand()/(double)RAND_MAX-0.5;
         double u=sqrt(pow(X2,2)+pow(X3,2));
         while (u>1){
-            X2=rand()/(double)RAND_MAX;
-            X3=rand()/(double)RAND_MAX;
+            X2=rand()/(double)RAND_MAX-0.5;
+            X3=rand()/(double)RAND_MAX-0.5;
             u=sqrt(pow(X2,2)+pow(X3,2));
         }
-        P.x=r*X2/u;
-        P.y=r*X3/u;
+        P.x=r*X2/(10.0*u);
+        P.y=r*X3/(10.0*u);
         //Méthode de rejet pour déterminer q
         double X5=rand()/(double)RAND_MAX;
         double X6=rand()/(double)RAND_MAX;
@@ -58,16 +58,16 @@ int main()
         if (Signe==0){q=X5;}
         if (Signe==1){q=-X5;}
         double v=vitesse_echappement(P,q);
-        double X7=rand()/(double)RAND_MAX;
-        double X8=rand()/(double)RAND_MAX;
+        double X7=rand()/(double)RAND_MAX-0.5;
+        double X8=rand()/(double)RAND_MAX-0.5;
         double uv=sqrt(pow(X7,2)+pow(X8,2));
         while (uv>1){
-            X7=rand()/(double)RAND_MAX;
-            X8=rand()/(double)RAND_MAX;
+            X7=rand()/(double)RAND_MAX-0.5;
+            X8=rand()/(double)RAND_MAX-0.5;
             uv=sqrt(pow(X7,2)+pow(X8,2));
         }
-        P.vx=v*X7/uv;
-        P.vy=v*X8/uv;
+        P.vx=v*X7/(10.0*uv);
+        P.vy=v*X8/(10.0*uv);
         P.m=1/(double)N_part;
         if  (P.x < 1 && P.y < 1)
         {
