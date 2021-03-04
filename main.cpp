@@ -51,7 +51,10 @@ int main()
             X6=rand()/(double)RAND_MAX;
             g=pow(X5,2)*pow(1-pow(X5,2),7.0/2.0);
         }
-        double q=X5;
+        double Signe=rand()%2;
+        double q;
+        if (Signe==0){q=X5;}
+        if (Signe==1){q=-X5;}
         double v=vitesse_echappement(P,q);
         double X7=rand()/(double)RAND_MAX;
         double X8=rand()/(double)RAND_MAX;
