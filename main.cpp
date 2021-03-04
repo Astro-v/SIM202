@@ -8,6 +8,7 @@
 
 // GRAPHIC LIBRARY
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 
 // INCLUDE LIBRARY
 #include "Boite.hpp"
@@ -42,8 +43,8 @@ int main()
             X3=rand()/(double)RAND_MAX-0.5;
             u=sqrt(pow(X2,2)+pow(X3,2));
         }
-        P.x=r*X2/(10.0*u);
-        P.y=r*X3/(10.0*u);
+        P.x=r*X2/(10.0*u) + 0.5;
+        P.y=r*X3/(10.0*u) + 0.5;
         //Méthode de rejet pour déterminer q
         double X5=rand()/(double)RAND_MAX;
         double X6=rand()/(double)RAND_MAX;
@@ -53,10 +54,11 @@ int main()
             X6=rand()/(double)RAND_MAX;
             g=pow(X5,2)*pow(1-pow(X5,2),7.0/2.0);
         }
-        double Signe=rand()%2;
+        //double Signe=rand()%2;
         double q;
-        if (Signe==0){q=X5;}
-        if (Signe==1){q=-X5;}
+        //if (Signe==0){q=X5;}
+        //if (Signe==1){q=-X5;}
+        q = X5;
         double v=vitesse_echappement(P,q);
         double X7=rand()/(double)RAND_MAX-0.5;
         double X8=rand()/(double)RAND_MAX-0.5;
@@ -68,7 +70,7 @@ int main()
         }
         P.vx=v*X7/(10.0*uv);
         P.vy=v*X8/(10.0*uv);
-        P.m=1/(double)N_part;
+        P.m=1/(double)(N_part);
         if  (P.x < 1 && P.y < 1)
         {
             vecPart.push_back(P);
@@ -79,6 +81,8 @@ int main()
     }
 
     MyWindow window(SIZE,SIZE);
+    int count = 0;
+    sf::Clock temps;
     while (window.isOpen())
     {
         sf::Event event;
@@ -92,13 +96,12 @@ int main()
         //cout<<"New step"<<endl;
         // We compute next step
         //euler(vecPart);
-        //euler_quad(vecPart, principale,0.5);
+        euler_quad(vecPart, principale,0.7);
         //cout<<"On est sorti"<<endl;
-        window.clear();
+
 
         //delete &principale;
 
-        //Boite principale = Boite(1,0.5,0.5,0, 0,0, 1);
         principale.nouveau();
 
         for (int i(0);i<N_part;++i)
@@ -108,16 +111,32 @@ int main()
 
         }
         //cout<<"On a recree les boites"<<endl;
-        //displayBox(principale,window);
 
-        for (int i(0);i<N_part;++i)
+        if(count >= 10)
         {
-            window.drawParticle(vecPart[i].x*SIZE,vecPart[i].y*SIZE,2);
-            principale.insert(&vecPart[i]);
+
+          cout<<temps.getElapsedTime().asMilliseconds()<<endl;
+          window.clear();
+          if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+          {
+              displayBox(principale,window);
+          }
+
+
+          for (int i(0);i<N_part;++i)
+          {
+              window.drawParticle(vecPart[i].x*SIZE,vecPart[i].y*SIZE,4);
+              //principale.insert(&vecPart[i]);
+
+          }
+
+          window.display();
+          count = 0;
+          temps.restart();
 
         }
+      count ++;
 
-        window.display();
     }
     system("PAUSE");
     return 0;
