@@ -2,7 +2,7 @@
 
 // STANDART LIBRARY
 #include <iostream> // Stream
-#include <stdlib.h>
+#include <stdlib.h> 
 #include <cmath>
 #include <vector>
 
@@ -19,18 +19,20 @@
 
 using namespace std;
 
-
 void displayBox(Boite&,MyWindow&);
 void euler(vector<Particule>&);
-void euler_quad(vector<Particule>& P, Boite principale,double theta);
+void euler_quad(vector<Particule>& P, Boite principale, double theta);
 
 int main()
 {
 
-    int N_part = 100;
+    int N_part1 = 500;
+    int N_part2 = 2000;
+    int N_part = N_part1+N_part2;
     Boite principale = Boite(1,0.5,0.5,0, 0,0, 1);
     vector<Particule> vecPart;
-    while ((int)vecPart.size() < N_part){
+    while (vecPart.size() < N_part1){
+        /*
         //Génération des conditions initiales
         double X1=rand()/(double)RAND_MAX;
         Particule P;
@@ -43,8 +45,13 @@ int main()
             X3=rand()/(double)RAND_MAX-0.5;
             u=sqrt(pow(X2,2)+pow(X3,2));
         }
+<<<<<<< HEAD
         P.x=r*X2/(10.0*u) + 0.5;
         P.y=r*X3/(10.0*u) + 0.5;
+=======
+        P.x=r*X2/(10*u)+0.5;
+        P.y=r*X3/(10*u)+0.5;
+>>>>>>> 5580ba79919eea9998e972234ee401bd8a911376
         //Méthode de rejet pour déterminer q
         double X5=rand()/(double)RAND_MAX;
         double X6=rand()/(double)RAND_MAX;
@@ -54,32 +61,83 @@ int main()
             X6=rand()/(double)RAND_MAX;
             g=pow(X5,2)*pow(1-pow(X5,2),7.0/2.0);
         }
+<<<<<<< HEAD
         //double Signe=rand()%2;
         double q;
         //if (Signe==0){q=X5;}
         //if (Signe==1){q=-X5;}
         q = X5;
+=======
+        double q=X5;
+>>>>>>> 5580ba79919eea9998e972234ee401bd8a911376
         double v=vitesse_echappement(P,q);
         double X7=rand()/(double)RAND_MAX-0.5;
         double X8=rand()/(double)RAND_MAX-0.5;
         double uv=sqrt(pow(X7,2)+pow(X8,2));
         while (uv>1){
-            X7=rand()/(double)RAND_MAX-0.5;
-            X8=rand()/(double)RAND_MAX-0.5;
+            X7=(rand()/(double)RAND_MAX-0.5);
+            X8=(rand()/(double)RAND_MAX-0.5);
             uv=sqrt(pow(X7,2)+pow(X8,2));
         }
+<<<<<<< HEAD
         P.vx=v*X7/(10.0*uv);
         P.vy=v*X8/(10.0*uv);
         P.m=1/(double)(N_part);
+=======
+        P.vx=v*X7/(10*uv);
+        P.vy=v*X8/(10*uv);
+        P.m=1/((double)N_part);
+>>>>>>> 5580ba79919eea9998e972234ee401bd8a911376
         if  (P.x < 1 && P.y < 1)
         {
             vecPart.push_back(P);
             principale.insert(&vecPart[vecPart.size()-1]);
+        }*/
+        Particule P;
+        double r=rand()/((double)RAND_MAX*16.0);
+        double theta=rand()/(double)RAND_MAX;
+        if (r>0.001)
+        {
+            P.x=r*cos(2*3.14*theta)+0.7;
+            P.y=r*sin(2*3.14*theta)+0.7;
+            P.vx = -sqrt(r)/20*sin(2*3.14*theta)-0.02;
+            P.vy = sqrt(r)/20*cos(2*3.14*theta)-0.005;
+        }
+        else
+        {
+            P.x=0.05*cos(2*3.14*theta)+0.7;
+            P.y=0.05*sin(2*3.14*theta)+0.7;
+            P.vx = -sqrt(0.001)/20*sin(2*3.14*theta)-0.02;
+            P.vy = sqrt(0.001)/20*cos(2*3.14*theta)-0.005;
         }
 
-
+        P.m=1/((double)N_part);
+        vecPart.push_back(P);
     }
+    while (vecPart.size() < N_part1+N_part2){
+  
+        Particule P;
+        double r=rand()/((double)RAND_MAX*8.0);
+        double theta=rand()/(double)RAND_MAX;
+        if (r>0.005)
+        {
+            P.x=r*cos(2*3.14*theta)+0.5;
+            P.y=r*sin(2*3.14*theta)+0.5;
+            P.vx = -sqrt(r)/20*sin(2*3.14*theta);
+            P.vy = sqrt(r)/20*cos(2*3.14*theta);
+        }
+        else
+        {
+            P.x=0.05*cos(2*3.14*theta)+0.5;
+            P.y=0.05*sin(2*3.14*theta)+0.5;
+            P.vx = -sqrt(0.005)/20*sin(2*3.14*theta);
+            P.vy = sqrt(0.005)/20*cos(2*3.14*theta);
+        }
 
+        P.m=1/((double)N_part);
+        vecPart.push_back(P);
+    }
+    int count(100);
     MyWindow window(SIZE,SIZE);
     int count = 0;
     sf::Clock temps;
@@ -111,6 +169,7 @@ int main()
 
         }
         //cout<<"On a recree les boites"<<endl;
+<<<<<<< HEAD
 
         if(count >= 10)
         {
@@ -133,6 +192,13 @@ int main()
           window.display();
           count = 0;
           temps.restart();
+=======
+        displayBox(principale,window);
+
+        for (int i(0);i<N_part1+N_part2;++i)
+        {
+            window.drawParticle(vecPart[i].x*SIZE,vecPart[i].y*SIZE,1);
+>>>>>>> 5580ba79919eea9998e972234ee401bd8a911376
 
         }
       count ++;
@@ -153,7 +219,7 @@ void displayBox(Boite& box,MyWindow& window)
 
 void euler(vector<Particule>& P)
 {
-    double dt(0.01);
+    double dt(0.0001);
     int N_part(P.size());
     double forceX[N_part][N_part];
     double forceY[N_part][N_part];
@@ -185,7 +251,7 @@ void euler(vector<Particule>& P)
 
 void euler_quad(vector<Particule>& P, Boite principale, double theta)
 {
-    double dt(0.01);
+    double dt(0.1);
     int N_part(P.size());
     for (int i(0);i<N_part;++i)
     {
