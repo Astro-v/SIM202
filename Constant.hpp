@@ -3,6 +3,7 @@
 
 #define TITLE "N-Body Problem"
 #define SIZE 1000
-#define GRAV 30
+#define GRAV 1
+#define DT 0.1
 
 #endif // __CONSTANT_HPP__

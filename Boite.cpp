@@ -32,36 +32,24 @@ bool Boite::contient(Particule* part){ //La particule est-elle située dans cett
 }
 
 void Boite::insert(Particule* part){
-  //cout<<"On insert une part"<<endl;
-  //cout<<"On essaye dans la boite de centre "<<centre_x<<","<<centre_y<<endl;
   if(!contient(part)){
-    //cout<<"Ce n'est pas la bonne boite"<<endl;
     return;
   }
   //La particule est située dans cette boite, on modifie donc le centre de masse et on l'ajoute.
   centre_masse_x = (masse*centre_masse_x +  part->m * part->x)/(masse + part->m);
   centre_masse_y = (masse*centre_masse_y +  part->m * part->y)/(masse + part->m);
   masse += part->m;
-  //cout<<"On a trouvé la bonne boite qui a deja "<<nb_particules<<" particules"<<endl;
   if(nb_particules < capacity){
-    //cout<<"la Particule que l'on veut inserer est : (x,y) =  ("<<part->x<<","<<part->y<<")"<<endl;
 
     //On ajoute la particule dans cette Boite
     particules.push_back(part);
-    //cout<<"On est la"<<endl;
     nb_particules += 1;
-    //double x = (part->r)*cos(part->teta);
-    //double y = (part->r)*sin(part->teta);
 
-    //cout<<"Ajouté"<<endl;
     return;
   }else{
     if(nordOuest == NULL){ //Si la boite n'a pas de fille
-      //cout<<"On subdivise"<<endl;
       subdivise(); //On crée les filles
-      //cout<<"Subdivisé"<<endl;
     }
-    //cout<<"Boite nO : niveau : "<<niveau + 1<<" centre_x : "<<centre_x - pow(2.,-(niveau+1))<<" centre y : "<<centre_y + pow(2.,-(niveau+1))<<endl;
 
     nordOuest->insert(part); //On ajoute la particule dans ces filles
     nordEst->insert(part);
@@ -122,13 +110,9 @@ vector<double> Boite::calcul_force(Particule P, double theta,double eps){
     }else{
       //on itère récursivement le processus
       vector<double> force_nO = nordOuest->calcul_force(P, theta, eps);
-      //cout<<"nO existe"<<endl;
       vector<double> force_nE = nordEst->calcul_force(P, theta, eps);
-      //cout<<"nE existe"<<endl;
       vector<double> force_sO = sudOuest->calcul_force(P, theta, eps);
-      //cout<<"sO existe"<<endl;
       vector<double> force_sE = sudEst->calcul_force(P, theta, eps);
-      //cout<<"sE existe"<<endl;
       force.push_back(force_nO[0] + force_nE[0] + force_sO[0] + force_sE[0]);
       force.push_back(force_nO[1] + force_nE[1] + force_sO[1] + force_sE[1]);
       return force;
