@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <cmath>
 #include <vector>
+#include <fstream>
 
 // GRAPHIC LIBRARY
 #include <SFML/Graphics.hpp>
@@ -26,59 +27,41 @@ void createGalaxy_initial(vector<Particule>& vecPart, int N_part);
 
 int main()
 {
+    ofstream myfile;
+    myfile.open ("resultats_temp.txt");
+    int N_max = 13;
+    sf::Clock clock;
 
-    int N_part1 =1000;
-    int N_part2 = 0;
-    int N_part = N_part1+N_part2;
-    Boite principale = Boite(1,0.5,0.5,0, 0,0, 1);
-    vector<Particule> vecPart;
-    createGalaxy(vecPart,0.001,0.05,N_part1,1);
-    //createGalaxy(vecPart,0.0005,0.02,N_part2,1.0/N_part,0.7,0.7,-0.03,0);
-    //createGalaxy_initial(vecPart,N_part);
+    for(int i = 1; i <= N_max; i++){
+      cout<<"Nombre de particules : 2^"<<i<<endl;
+      int N_part1 =pow(2,i);
+      int N_part2 = 0;
+      int N_part = N_part1+N_part2;
+      Boite principale = Boite(1,0.5,0.5,0, 0,0, 1);
+      vector<Particule> vecPart;
+      createGalaxy(vecPart,0.001,0.05,N_part1,1);
+      cout<<"Vrai nombre de particules : "<<vecPart.size()<<endl;
+      //createGalaxy(vecPart,0.0005,0.02,N_part2,1.0/N_part,0.7,0.7,-0.03,0);
+      //createGalaxy_initial(vecPart,N_part);
+      clock.restart();
 
-    int count(100);
-    MyWindow window(SIZE,SIZE);
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
-        }
-
-        // We compute next step
-        //euler(vecPart);
-        euler_quad(vecPart, principale,0.7);
-
-        window.clear();
-
-
+      for(int j = 0; j < 100; j++){
+        euler(vecPart);
         principale.nouveau();
         for (int i(0);i<N_part;++i)
         {
             principale.insert(&vecPart[i]);
 
         }
+      }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-        {
-              //Si on appuie sur espace, on affiche les boites
-              displayBox(principale,window);
-        }
+      sf::Time elapsed1 = clock.getElapsedTime();
+      myfile<<i<<"   "<<elapsed1.asMilliseconds() <<"\n";
+      cout<<i<<"   "<<elapsed1.asMilliseconds() <<endl;
 
-        for (int i(0);i<N_part;++i)
-        {
-            window.drawParticle(vecPart[i].x*SIZE,vecPart[i].y*SIZE,1);
-
-        }
-
-        window.display();
-
-    }
-    system("PAUSE");
+  }
+    myfile.close();
+    cout<<"Fini"<<endl;
     return 0;
 }
 
