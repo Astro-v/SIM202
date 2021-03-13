@@ -28,7 +28,7 @@ int main()
 {
 
     int N_part1 =1000;
-    int N_part2 = 0;
+    int N_part2 = 200;
     int N_part = N_part1+N_part2;
     Boite principale = Boite(1,0.5,0.5,0, 0,0, 1);
     vector<Particule> vecPart;
