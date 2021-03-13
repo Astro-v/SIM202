@@ -27,15 +27,14 @@ void createGalaxy_initial(vector<Particule>& vecPart, int N_part);
 int main()
 {
 
-    int N_part1 = 2000;
-    int N_part2 = 500;
+    int N_part1 =1000;
+    int N_part2 = 0;
     int N_part = N_part1+N_part2;
     Boite principale = Boite(1,0.5,0.5,0, 0,0, 1);
     vector<Particule> vecPart;
     createGalaxy(vecPart,0.001,0.05,N_part1,1);
-    createGalaxy(vecPart,0.0005,0.02,N_part2,1.0/N_part,0.7,0.7,-0.03,0);
+    //createGalaxy(vecPart,0.0005,0.02,N_part2,1.0/N_part,0.7,0.7,-0.03,0);
     //createGalaxy_initial(vecPart,N_part);
-
 
     int count(100);
     MyWindow window(SIZE,SIZE);
@@ -70,7 +69,6 @@ int main()
               displayBox(principale,window);
         }
 
-
         for (int i(0);i<N_part;++i)
         {
             window.drawParticle(vecPart[i].x*SIZE,vecPart[i].y*SIZE,1);
@@ -78,6 +76,7 @@ int main()
         }
 
         window.display();
+
     }
     system("PAUSE");
     return 0;
