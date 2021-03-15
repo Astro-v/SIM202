@@ -27,19 +27,23 @@ void createGalaxy_initial(vector<Particule>& vecPart, int N_part);
 int main()
 {
 
-    int N_part1 =1000;
-    int N_part2 = 200;
+    int N_part1 =1;
+    int N_part2 = 0;
     int N_part = N_part1+N_part2;
     Boite principale = Boite(1,0.5,0.5,0, 0,0, 1);
     vector<Particule> vecPart;
-    createGalaxy(vecPart,0.001,0.05,N_part1,1);
+    //createGalaxy(vecPart,0.001,0.05,N_part1,1);
     //createGalaxy(vecPart,0.0005,0.02,N_part2,1.0/N_part,0.7,0.7,-0.03,0);
     //createGalaxy_initial(vecPart,N_part);
+    Particule P;
+    P.x = rand()/(double)RAND_MAX - 0.5;
+    P.y = rand()/(double)RAND_MAX - 0.5;
 
-    int count(100);
+    vecPart.push_back(P);
+    int count(0);
     MyWindow window(SIZE,SIZE);
     while (window.isOpen())
-    {
+    {   count++;
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -51,7 +55,17 @@ int main()
 
         // We compute next step
         //euler(vecPart);
-        euler_quad(vecPart, principale,0.7);
+        //euler_quad(vecPart, principale,0.7);
+
+        if(count%500 == 0){
+          Particule P;
+          P.x = rand()/(double)RAND_MAX;
+          P.y = rand()/(double)RAND_MAX;
+          cout<<P.x<<P.y<<endl;
+
+          vecPart.push_back(P);
+          N_part++;
+        }
 
         window.clear();
 
@@ -68,10 +82,11 @@ int main()
               //Si on appuie sur espace, on affiche les boites
               displayBox(principale,window);
         }
+        displayBox(principale,window);
 
         for (int i(0);i<N_part;++i)
         {
-            window.drawParticle(vecPart[i].x*SIZE,vecPart[i].y*SIZE,1);
+            window.drawParticle(vecPart[i].x*SIZE,vecPart[i].y*SIZE,4);
 
         }
 
