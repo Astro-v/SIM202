@@ -29,12 +29,12 @@ int main()
 {
     ofstream myfile;
     myfile.open ("resultats_temp.txt");
-    int N_max = 9;
+    int N_max = 13;
     sf::Clock clock;
 
-    //for(int i = 1; i <= N_max; i++){
-      cout<<"Nombre de particules : 2^"<<N_max<<endl;
-      int N_part1 =pow(2,N_max);
+    for(int i = 1; i <= N_max; i++){
+      cout<<"Nombre de particules : 2^"<<i<<endl;
+      int N_part1 =pow(2,i);
       int N_part2 = 0;
       int N_part = N_part1+N_part2;
       Boite principale = Boite(1,0.5,0.5,0, 0,0, 1);
@@ -46,11 +46,9 @@ int main()
       clock.restart();
 
       for(int j = 0; j < 100; j++){
-          cout<<j<<endl;
-
         euler(vecPart);
         principale.nouveau();
-        for (int i(0);i<N_part;++i)
+        for (int i(0);i<i;++i)
         {
             principale.insert(&vecPart[i]);
 
@@ -58,10 +56,10 @@ int main()
       }
 
       sf::Time elapsed1 = clock.getElapsedTime();
-      myfile<<N_max<<"   "<<elapsed1.asMilliseconds() <<"\n";
-      cout<<N_max<<"   "<<elapsed1.asMilliseconds() <<endl;
+      myfile<<i<<"   "<<elapsed1.asMilliseconds() <<"\n";
+      cout<<i<<"   "<<elapsed1.asMilliseconds() <<endl;
 
-  //}
+  }
     myfile.close();
     cout<<"Fini"<<endl;
     return 0;
@@ -159,31 +157,24 @@ void euler(vector<Particule>& P)
 {
     double dt(DT );
     int N_part(P.size());
-    double forceX[N_part][N_part];
-    double forceY[N_part][N_part];
-    for (int i(0);i<N_part;++i)
-    {
-        for (int j(0);j<N_part;++j)
-        {
-            forceX[i][j] = 0;
-            forceY[i][j] = 0;
-            if (i!=j)
-            {
-                forceX[i][j] = force_interaction(P[j],P[i],0.01)*(P[i].x-P[j].x);
-                forceY[i][j] = force_interaction(P[j],P[i],0.01)*(P[i].y-P[j].y);
-            }
 
-        }
-    }
-    for (int i(0);i<N_part;++i)
-    {
-        P[i].x = P[i].x + dt*P[i].vx;
-        P[i].y = P[i].y + dt*P[i].vy;
-        for (int j(0);j<N_part;++j)
+    for(int i = 0; i < N_part; i++){
+      double forceX = 0;
+      double forceY = 0;
+
+      for(int j = 0; j < N_part; j++){
+        if (i!=j)
         {
-            P[i].vx = P[i].vx + dt*forceX[i][j];
-            P[i].vy = P[i].vy + dt*forceY[i][j];
+          double forces_autres = force_interaction(P[j],P[i],0.01);
+            forceX += forces_autres*(P[i].x-P[j].x);
+            forceY += forces_autres*(P[i].y-P[j].y);
         }
+      }
+      P[i].x = P[i].x + dt*P[i].vx;
+      P[i].y = P[i].y + dt*P[i].vy;
+
+      P[i].vx = P[i].vx + dt*forceX;
+      P[i].vy = P[i].vy + dt*forceY;
     }
 }
 
