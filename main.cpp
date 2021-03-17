@@ -45,8 +45,8 @@ int main()
       //createGalaxy_initial(vecPart,N_part);
       clock.restart();
 
-      for(int j = 0; j < 100; j++){
-        euler(vecPart);
+      for(int j = 0; j < 10; j++){
+        euler_quad(vecPart,principale,0.7);
         principale.nouveau();
         for (int i(0);i<i;++i)
         {
