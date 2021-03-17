@@ -29,12 +29,12 @@ int main()
 {
     ofstream myfile;
     myfile.open ("resultats_temp_euler_quad.txt");
-    int N_max = 10;
+    int N_max = 13;
     sf::Clock clock;
 
-    for(int i = 1; i <= N_max; i++){
+    for(int i = 13; i <= N_max; i++){
       //cout<<"Nombre de particules : 2^"<<i<<endl;
-      int N_part1 =1000*i;
+      int N_part1 =pow(2,i);
       int N_part2 = 0;
       int N_part = N_part1+N_part2;
       Boite principale = Boite(1,0.5,0.5,0, 0,0, 1);
@@ -46,14 +46,15 @@ int main()
       clock.restart();
 
       for(int j = 0; j < 100; j++){
-        euler_quad(vecPart,principale,0.7);
-        //euler(vecPart);
-        principale.nouveau();
+        //euler_quad(vecPart,principale,0.7);
+        euler(vecPart);
+        //principale.nouveau();
+        /*
         for (int i(0);i<N_part;++i)
         {
             principale.insert(&vecPart[i]);
 
-        }
+        }*/
       }
 
       sf::Time elapsed1 = clock.getElapsedTime();
